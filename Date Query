@@ -20,8 +20,8 @@ let fnDateTable = (StartDate as date, EndDate as date, FYStartMonth as number) a
     InsertWeekNumber= Table.AddColumn(InsertWeekEnding, "Week Number", each Date.WeekOfYear([Date])),
     InsertMonthnYear = Table.AddColumn(InsertWeekNumber,"MonthnYear", each [Year] * 10000 + [MonthOfYear] * 100),
     InsertQuarternYear = Table.AddColumn(InsertMonthnYear,"QuarternYear", each [Year] * 10000 + [QuarterOfYear] * 100),
-    InsertFYQuarter = Table.AddColumn(InsertQuarternYear, "FY Quarter", each "Q" & Number.ToText(Int32.From(((Date.Month([Date])-FYStartMonth+12)/3)+1)))
-    ChangedType1 = Table.TransformColumnTypes(InsertQuarternYear,{{"FY Quarter", type text}{"QuarternYear", Int64.Type},{"Week Number", Int64.Type},{"Year", type text},{"MonthnYear", Int64.Type}, {"DateInt", Int64.Type}, {"DayOfMonth", Int64.Type}, {"MonthOfYear", Int64.Type}, {"QuarterOfYear", Int64.Type}, {"MonthInCalendar", type text}, {"QuarterInCalendar", type text}, {"DayInWeek", Int64.Type}}),
+    InsertFYQuarter = Table.AddColumn(InsertQuarternYear, "FY Quarter", each "Q" & Number.ToText(Int32.From(((Date.Month([Date])-FYStartMonth+12)/3)+1))),
+    ChangedType1 = Table.TransformColumnTypes(InsertQuarternYear,{{"FY Quarter", type text},{"QuarternYear", Int64.Type},{"Week Number", Int64.Type},{"Year", type text},{"MonthnYear", Int64.Type}, {"DateInt", Int64.Type}, {"DayOfMonth", Int64.Type}, {"MonthOfYear", Int64.Type}, {"QuarterOfYear", Int64.Type}, {"MonthInCalendar", type text}, {"QuarterInCalendar", type text}, {"DayInWeek", Int64.Type}}),
     InsertShortYear = Table.AddColumn(ChangedType1, "ShortYear", each Text.End(Text.From([Year]), 2), type text),
     AddFY = Table.AddColumn(InsertShortYear, "FY", each "FY"&(if [MonthOfYear]>=FYStartMonth then Text.From(Number.From([ShortYear])+1) else [ShortYear]))
 in
